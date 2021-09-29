@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Menus{% endblock title %}
+{% block content %}
+    {% load menu_tag %}
+
+    {% draw_menu 'menu1' as menu1 %}
+    {{ menu1|safe }}
+
+    {% draw_menu 'menu2' as menu2 %}
+    {{ menu2|safe }}
+{% endblock content %}
