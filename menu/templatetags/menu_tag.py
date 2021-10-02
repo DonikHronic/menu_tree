@@ -18,7 +18,5 @@ def draw_menu(name):
 	menu_json = json.loads(json.dumps(serializer.data, ensure_ascii=False))
 
 	if pages:
-		tree = build_tree(menu_json)
-	else:
-		tree = ''
-	return tree
+		return build_tree(menu_json)
+	return ''
