@@ -1,7 +1,10 @@
+import json
+
 from django import template
 
+from menu.api.serializers import StaticPagesSerializer
 from menu.models import StaticPages, Menu
-from menu.utils import create_menu_tree
+from menu.utils import build_tree
 
 register = template.Library()
 
@@ -9,9 +12,13 @@ register = template.Library()
 @register.simple_tag()
 def draw_menu(name):
 	menu = Menu.objects.get(name=name)
-	pages = StaticPages.objects.filter(menu=menu.id, parent=None)
+	pages = StaticPages.objects.filter(menu=menu.id)
+
+	serializer = StaticPagesSerializer(pages, many=True)
+	menu_json = json.loads(json.dumps(serializer.data, ensure_ascii=False))
+
 	if pages:
-		tree = create_menu_tree(pages)
+		tree = build_tree(menu_json)
 	else:
 		tree = ''
 	return tree
